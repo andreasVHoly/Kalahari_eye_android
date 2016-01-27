@@ -3,6 +3,8 @@ package avh.com.kalaharieye;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -12,8 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.videoio.VideoCapture;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +49,28 @@ public class MainActivity extends AppCompatActivity {
         cam = new CameraHandler(100,150,"8080","admin","1234");
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
+
     }
+
+    private BaseLoaderCallback  mOpenCVCallBack = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i("Load OpenCV", "OpenCV loaded successfully");
+                    setContentView(R.layout.activity_main);
+                    cam.connectToCamera();
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
+
+
 
 
     private void defaultState(){
@@ -107,13 +134,19 @@ public class MainActivity extends AppCompatActivity {
 
         startRefreshAnimation();
         //TODO renable this later
-        /*if (cam.connectToCamera()){
+        if (cam.connectToCamera()){
             currentMode = AppState.LIVE_MODE;
             //now we need to handle the input from the camera
             //we need to set up an update method
             //also we need to make refresh button dissapear
+            VideoCapture vcap = new VideoCapture();
+            vcap.open(cam.getConnectionAddress());
+            Mat firstImage = new Mat();
+            vcap.read(firstImage);
+            convertMat(firstImage);
+
         }
-        stopRefreshAnimation();*/
+        stopRefreshAnimation();
 
 
     }
