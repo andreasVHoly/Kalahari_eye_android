@@ -1,10 +1,12 @@
 package avh.com.kalaharieye;
 
 /**
- * Created by SMNM on 26/1/2016.
+ * Created by Andreas on 26/1/2016.
+ * class that handles the connection to the camera and handles the assosaited data
  */
 
 import org.opencv.videoio.VideoCapture;
+import android.util.Log;
 
 public class CameraHandler {
 
@@ -39,11 +41,11 @@ public class CameraHandler {
         for (int i = startIP; i < endIP; i++){
             connectionAddress = connectionAddressStart + Integer.toString(i) + connectionAddressEnd;
             if (vcap.open(connectionAddress)){
-                System.out.println("Connected to camera at address " + ipAddress + i);
+                Log.i("Camera Handler","Connected to camera at address " + ipAddress + i);
                 successfullConnect = true;
                 break;
             }
-            System.out.println("Could not connect to camera at address " + ipAddress + i);
+            Log.e("Camera Handler","Could not connect to camera at address " + ipAddress + i);
         }
         return successfullConnect;
 
@@ -72,9 +74,7 @@ public class CameraHandler {
         return connectionAddress;
     }
 
-    public void setConnectionAddress(String connectionAddress) {
-        this.connectionAddress = connectionAddress;
-    }
+    public void setConnectionAddress(String connectionAddress) {  this.connectionAddress = connectionAddress;    }
 
     public int getStartIP() {
         return startIP;
