@@ -36,7 +36,8 @@
                 android:textOn="@string/live_mode"
                 android:id="@+id/button_live_mode"
                 android:layout_gravity="center_horizontal"
-                android:checked="false" />
+                android:checked="false"
+                android:onClick="buttonOnClick" />
 
             <ToggleButton
                 android:layout_width="wrap_content"
@@ -45,7 +46,8 @@
                 android:textOn="@string/shooting_mode"
                 android:id="@+id/button_shooting_mode"
                 android:layout_gravity="center_horizontal"
-                android:checked="false" />
+                android:checked="false"
+                android:onClick="buttonOnClick" />
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"
@@ -60,7 +62,8 @@
             android:layout_height="wrap_content"
             android:text="@string/show_next_shot"
             android:id="@+id/button_next_shot"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="buttonOnClick" />
     </LinearLayout>
 
     <LinearLayout
@@ -91,9 +94,11 @@
         android:id="@+id/panel_image_2"
         android:background="@android:color/white"/>
 
-
-
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textView" />
 
 
     </LinearLayout>
