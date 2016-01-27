@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">KalahariEye</string>
     <string name="show_next_shot">Show Next Shot</string>
+    <string name="live_mode">Live Mode</string>
+    <string name="shooting_mode">Shooting Mode</string>
+    <string name="main_image_desc">Main Image of the app</string>
+    <string name="side_panel_image">Image that will be in the side panel, previous shots</string>
 </resources>

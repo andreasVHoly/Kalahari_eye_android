@@ -1,34 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="2"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="avh.com.kalaharieye.MainActivity">
+    android:baselineAligned="false"
+    tools:context="avh.com.kalaharieye.MainActivity"
+    android:orientation="horizontal"
+    >
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true">
+        >
 
-        <Button
+        <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:weightSum="2"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="@string/live_mode"
+                android:textOn="@string/live_mode"
+                android:id="@+id/button_live_mode"
+                android:layout_gravity="center_horizontal"
+                android:checked="false" />
+
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="@string/shooting_mode"
+                android:textOn="@string/shooting_mode"
+                android:id="@+id/button_shooting_mode"
+                android:layout_gravity="center_horizontal"
+                android:checked="false" />
+        </LinearLayout>
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Live Mode"
-            android:id="@+id/button_live"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shooting Mode"
-            android:id="@+id/button_shooting"
-            android:layout_gravity="center_horizontal" />
+            android:contentDescription="@string/main_image_desc"
+            android:id="@+id/main_image"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_no_video" />
 
         <Button
             android:layout_width="wrap_content"
@@ -38,4 +63,44 @@
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/side_panel_image"
+        android:id="@+id/panel_image_0"
+        android:background="@android:color/white"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/side_panel_image"
+        android:id="@+id/panel_image_1"
+        android:background="@android:color/white"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/side_panel_image"
+        android:id="@+id/panel_image_2"
+        android:background="@android:color/white"/>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+
+
+
