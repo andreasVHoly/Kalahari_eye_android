@@ -17,12 +17,15 @@ import android.widget.ToggleButton;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
+
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     //UI ELEMENTS
     private ToggleButton btnShootMode;
@@ -52,13 +55,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private BaseLoaderCallback  mOpenCVCallBack = new BaseLoaderCallback(this) {
+    /** Call on every application resume **/
+    @Override
+    protected void onResume()
+    {
+        Log.i(TAG, "Called onResume");
+        super.onResume();
+
+        Log.i(TAG, "Trying to load OpenCV library");
+        if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mOpenCVCallBack)) {
+            Log.e(TAG, "Cannot connect to OpenCV Manager");
+        }
+    }
+
+    private BaseLoaderCallback mOpenCVCallBack = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
                 {
-                    Log.i("Load OpenCV", "OpenCV loaded successfully");
+                    Log.i("OpenCV", "OpenCV loaded successfully");
+                    // Create and set View
+
                     setContentView(R.layout.activity_main);
                     cam.connectToCamera();
                 } break;
@@ -69,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
 
 
 
