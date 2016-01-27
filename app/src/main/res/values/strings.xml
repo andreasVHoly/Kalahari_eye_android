@@ -5,4 +5,5 @@
     <string name="shooting_mode">Shooting Mode</string>
     <string name="main_image_desc">Main Image of the app</string>
     <string name="side_panel_image">Image that will be in the side panel, previous shots</string>
+    <string name="refresh_btn">The video refresh button</string>
 </resources>
