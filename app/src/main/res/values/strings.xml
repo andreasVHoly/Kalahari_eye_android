@@ -9,5 +9,8 @@
     <string name="show_next_menu">Show Next</string>
     <string name="about_us_menu">About Us</string>
     <string name="exit_menu">Exit</string>
+    <string name="save_session_menu">Save Session</string>
+    <string name="new_session_menu">New Session</string>
+
 
 </resources>

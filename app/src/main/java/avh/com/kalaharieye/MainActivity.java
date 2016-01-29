@@ -15,6 +15,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -29,6 +30,8 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,45 +51,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://avh.com.kalaharieye/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
+    //FOR THE IMAGE PANEL
+    private ArrayList<ImageView> imagePanel;
+    private int noImages;
+    private LinearLayout imageContainer;
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://avh.com.kalaharieye/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }
 
     //ENUMS FOR APP STATE
     public enum AppState {
@@ -100,8 +70,9 @@ public class MainActivity extends AppCompatActivity {
     private CameraHandler cam;
 
 
+
+    //VERY IMPORTANT, LOADS THE LIBRARY SO WE CAN USE IT
     static {
-        // If you use opencv 2.4, System.loadLibrary("opencv_java")
         System.loadLibrary("opencv_java3");
     }
 
@@ -111,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         assignUIVariables();
+        setUpImagePanel();
         cam = new CameraHandler(100, 150, "8080", "admin", "1234");
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
@@ -170,6 +142,22 @@ public class MainActivity extends AppCompatActivity {
         btnRefreshVideo = (ImageButton) findViewById(R.id.button_refresh);
         mainImage = (ImageView) findViewById(R.id.main_image);
 
+    }
+
+
+    //SETS UP ALL THE VARIABLES FOR THE IMAGE PANEL
+    private void setUpImagePanel(){
+        imagePanel = new ArrayList<>();
+        noImages = 0;
+        imageContainer = (LinearLayout) findViewById(R.id.image_container);
+        //TODO need to still convert the image panbel to be scrollable, do this by adding in  a scrollview in xml
+    }
+
+    //ADDS A NEW IMAGE TO THE PANEL
+    private void addImageView(ImageView image){
+        imagePanel.add(image);
+        noImages++;
+        imageContainer.addView(image);
     }
 
 
@@ -272,6 +260,27 @@ public class MainActivity extends AppCompatActivity {
         btnRefreshVideo.clearAnimation();
     }
 
+    //SAVE ALL IMAGES IN THE SESSION
+    private void saveSession(){
+        //TODO cycle through the images and save them
+    }
+
+    //SAVES THE IMAGE ONTO THE PHONE
+    private void saveImageToPhone(){
+        //TODO save image to disk
+    }
+
+
+    //START A NEW SESSION, DISCARDING ALL PREVIOUS IMAGES
+    private void newSession(){
+        for (int i = 1; i <= noImages; i++){
+            imageContainer.removeViewAt(i);
+        }
+        imagePanel.clear();
+        noImages = 0;
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -303,10 +312,58 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_shooting_mode:
                 enableShootingButton();
                 return true;
+            case R.id.menu_save_session:
+                saveSession();
+                return true;
+            case R.id.menu_new_session:
+                newSession();
+                return true;
             default:
                 return false;
         }
 
+    }
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://avh.com.kalaharieye/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://avh.com.kalaharieye/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 
 

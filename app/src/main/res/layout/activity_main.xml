@@ -91,38 +91,42 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/image_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_weight="0.8"
         android:layout_height="match_parent">
 
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/side_panel_image"
-        android:id="@+id/panel_image_0"
-        android:background="@android:color/white"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/side_panel_image"
-        android:id="@+id/panel_image_1"
-        android:background="@android:color/white"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/side_panel_image"
-        android:id="@+id/panel_image_2"
-        android:background="@android:color/white"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:layout_gravity="center_horizontal"
+            android:text="Images"
             android:id="@+id/textView" />
+
+        <!--
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/side_panel_image"
+            android:id="@+id/panel_image_0"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/side_panel_image"
+            android:id="@+id/panel_image_1"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/side_panel_image"
+            android:id="@+id/panel_image_2"
+            android:background="@android:color/white"/>
+-->
+
 
 
     </LinearLayout>
