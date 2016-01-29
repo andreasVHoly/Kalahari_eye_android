@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="avh.com.kalaharieye.MainActivity">
+
+    <item
+        android:id="@+id/menu_shooting_mode"
+        android:title="@string/shooting_mode"
+        />
+
+    <item
+        android:id="@+id/menu_live_mode"
+        android:title="@string/live_mode"/>
+
+    <item
+        android:id="@+id/menu_next_shot"
+        android:title="@string/show_next_shot" />
+
+    <item
+        android:id="@+id/menu_about"
+        android:title="@string/about_us_menu" />
+
+    <item
+        android:id="@+id/menu_exit_app"
+        android:title="@string/exit_menu" />
+
+
+
+
+</menu>

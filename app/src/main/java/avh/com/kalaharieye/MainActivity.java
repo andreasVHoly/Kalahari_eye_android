@@ -1,9 +1,13 @@
 package avh.com.kalaharieye;
 
+import android.app.Application;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,6 +19,10 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -23,7 +31,7 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -34,9 +42,57 @@ public class MainActivity extends AppCompatActivity  {
     private ImageButton btnRefreshVideo;
     private TextView debugText;
     private ImageView mainImage;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://avh.com.kalaharieye/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://avh.com.kalaharieye/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 
     //ENUMS FOR APP STATE
-    public enum AppState{SHOOTING_MODE,LIVE_MODE,NO_VIDEO_MODE}
+    public enum AppState {
+        SHOOTING_MODE, LIVE_MODE, NO_VIDEO_MODE
+    }
+
     public AppState currentMode;
 
 
@@ -44,19 +100,30 @@ public class MainActivity extends AppCompatActivity  {
     private CameraHandler cam;
 
 
+    static {
+        // If you use opencv 2.4, System.loadLibrary("opencv_java")
+        System.loadLibrary("opencv_java3");
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(avh.com.kalaharieye.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         assignUIVariables();
-        cam = new CameraHandler(100,150,"8080","admin","1234");
+        cam = new CameraHandler(100, 150, "8080", "admin", "1234");
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    /** Call on every application resume **/
-    @Override
+    /**
+     * Call on every application resume
+     **/
+    /*@Override
     protected void onResume()
     {
         Log.i(TAG, "Called onResume");
@@ -86,13 +153,8 @@ public class MainActivity extends AppCompatActivity  {
                 } break;
             }
         }
-    };
-
-
-
-
-
-    private void defaultState(){
+    };*/
+    private void defaultState() {
         currentMode = AppState.NO_VIDEO_MODE;
         btnLiveMode.setChecked(false);
         btnShootMode.setChecked(false);
@@ -100,10 +162,10 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     //finds the UI variables that we need to find as the app starts
-    private void assignUIVariables(){
+    private void assignUIVariables() {
         btnLiveMode = (ToggleButton) findViewById(R.id.button_live_mode);
         btnShootMode = (ToggleButton) findViewById(R.id.button_shooting_mode);
-        btnNextShot =  (Button) findViewById(R.id.button_next_shot);
+        btnNextShot = (Button) findViewById(R.id.button_next_shot);
         debugText = (TextView) findViewById(R.id.textView);
         btnRefreshVideo = (ImageButton) findViewById(R.id.button_refresh);
         mainImage = (ImageView) findViewById(R.id.main_image);
@@ -111,40 +173,58 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-
-
     //HANDLES SHOOTING MODE BUTTON RESPONSE
-    public void onShootingButtonPress(View v){
+    public void onShootingButtonPress(View v) {
         debugText.setText("shoot register");
-        if (btnShootMode.isChecked()){
+        /*if (btnShootMode.isChecked()) {
             btnLiveMode.setChecked(false);
             currentMode = AppState.SHOOTING_MODE;
-        }
-        else{
+        } else {
             btnLiveMode.setChecked(true);
             currentMode = AppState.LIVE_MODE;
-        }
-    }
-    //HANDLES LIVE BUTTON RESPONSE
-    public void onLiveButtonPress(View v){
-        debugText.setText("live register");
-        if (btnLiveMode.isChecked()){
-            btnShootMode.setChecked(false);
-            currentMode = AppState.LIVE_MODE;
-        }
-        else{
-            btnShootMode.setChecked(true);
-            currentMode = AppState.SHOOTING_MODE;
-        }
+        }*/
+        enableShootingButton();
     }
 
+    //HANDLES LIVE BUTTON RESPONSE
+    public void onLiveButtonPress(View v) {
+        debugText.setText("live register");
+        /*if (btnLiveMode.isChecked()) {
+            btnShootMode.setChecked(false);
+            currentMode = AppState.LIVE_MODE;
+        } else {
+            btnShootMode.setChecked(true);
+            currentMode = AppState.SHOOTING_MODE;
+        }*/
+        enableLiveButton();
+    }
+
+    public void enableLiveButton(){
+        btnShootMode.setChecked(false);
+        btnLiveMode.setChecked(true);
+        currentMode = AppState.LIVE_MODE;
+    }
+
+    public void enableShootingButton(){
+        btnLiveMode.setChecked(false);
+        btnShootMode.setChecked(true);
+        currentMode = AppState.SHOOTING_MODE;
+    }
+
+
+
     //HANDLES NEXT SHOT BUTTON RESPONSE
-    public void onNextShotButtonPress(View v){
+    public void onNextShotButtonPress(View v) {
         debugText.setText("next shot register");
+        showNextShot();
+    }
+
+    private void showNextShot(){
+
     }
 
     //HANDLES REFRESH BUTTON RESPONSE
-    public void onRefreshButtonPress(View v){
+    public void onRefreshButtonPress(View v) {
         debugText.setText("refresh");
         //try connect to camera
         //need to time this if it fails we need to reset it
@@ -153,7 +233,7 @@ public class MainActivity extends AppCompatActivity  {
 
         startRefreshAnimation();
         //TODO renable this later
-        if (cam.connectToCamera()){
+        /*if (cam.connectToCamera()){
             currentMode = AppState.LIVE_MODE;
             //now we need to handle the input from the camera
             //we need to set up an update method
@@ -164,18 +244,16 @@ public class MainActivity extends AppCompatActivity  {
             vcap.read(firstImage);
             convertMat(firstImage);
 
-        }
+        }*/
         stopRefreshAnimation();
 
 
     }
 
 
-
-
     //this converts the mat we just received from the video capture and converts
     //it to a bitmap and assigns it to the main image
-    private void convertMat(Mat mat){
+    private void convertMat(Mat mat) {
         Bitmap bm = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, bm);
         mainImage.setImageBitmap(bm);
@@ -183,15 +261,52 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    private void startRefreshAnimation(){
+    private void startRefreshAnimation() {
         RotateAnimation r = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         r.setRepeatCount(Animation.INFINITE);
         r.setDuration(1000);
         btnRefreshVideo.startAnimation(r);
     }
 
-    private void stopRefreshAnimation(){
+    private void stopRefreshAnimation() {
         btnRefreshVideo.clearAnimation();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()){
+            case R.id.menu_about:
+                //load the about menu
+                Log.i("Context Menu", "About us reg");
+                return true;
+            case R.id.menu_exit_app:
+                System.exit(0);
+                return true;
+            case R.id.menu_live_mode:
+                enableLiveButton();
+                return true;
+            case R.id.menu_next_shot:
+                showNextShot();
+                return true;
+            case R.id.menu_shooting_mode:
+                enableShootingButton();
+                return true;
+            default:
+                return false;
+        }
+
     }
 
 
