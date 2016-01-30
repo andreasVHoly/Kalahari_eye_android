@@ -11,6 +11,10 @@
     <string name="exit_menu">Exit</string>
     <string name="save_session_menu">Save Session</string>
     <string name="new_session_menu">New Session</string>
+    <string name="title_activity_abous_us">About Us</string>
+    <string name="about_us_text">Please feel free to contact us directly about any suggestions or issues you have with the application.</string>
+    <string name="cell_number"> Cell: +27 76 702 9675</string>
+    <string name="email">Email: andreas409@gmail.com</string>
 
 
 </resources>

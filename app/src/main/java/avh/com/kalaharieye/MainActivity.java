@@ -1,18 +1,14 @@
 package avh.com.kalaharieye;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -28,15 +24,10 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -357,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.menu_about:
                 //load the about menu
-                Log.i("Context Menu", "About us reg");
+                loadAboutUsPage();
                 return true;
             case R.id.menu_exit_app:
                 System.exit(0);
@@ -383,6 +374,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    private void loadAboutUsPage(){
+        //Starting a new Intent
+        Intent nextScreen = new Intent(getApplicationContext(), AboutUsActivity.class);
+        startActivity(nextScreen);
+    }
 
 
     @Override
