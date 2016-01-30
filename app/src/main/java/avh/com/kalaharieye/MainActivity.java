@@ -368,12 +368,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_new_session:
                 newSession();
                 return true;
+            case R.id.menu_settings:
+                loadSettingsPage();
+                return true;
             default:
                 return false;
         }
 
     }
 
+
+    private void loadSettingsPage(){
+        //start new intent
+        Intent nextScreen = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(nextScreen);
+    }
 
     private void loadAboutUsPage(){
         //Starting a new Intent

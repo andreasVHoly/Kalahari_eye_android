@@ -24,6 +24,10 @@
         android:title="@string/new_session_menu" />
 
     <item
+        android:id="@+id/menu_settings"
+        android:title="@string/menu_settings" />
+
+    <item
         android:id="@+id/menu_about"
         android:title="@string/about_us_menu" />
 
