@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
+
     }
 
     /**
@@ -158,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         imagePanel = new ArrayList<>();
         noImages = 0;
         imageContainer = (LinearLayout) findViewById(R.id.image_container);
-        //TODO need to still convert the image panbel to be scrollable, do this by adding in  a scrollview in xml
+        //TODO need to still convert the image pannel to be scrollable, do this by adding in  a scrollview in xml
     }
 
     //ADDS A NEW IMAGE TO THE PANEL
@@ -241,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             convertMat(firstImage);
 
         }*/
+
         stopRefreshAnimation();
 
 
@@ -270,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
     //SAVE ALL IMAGES IN THE SESSION
     private void saveSession(){
-        //TODO cycle through the images and save them
         for (int i = 0; i < noImages; i++){
             saveImageToPhone(imagePanel.get(i), i);
         }
@@ -278,9 +282,6 @@ public class MainActivity extends AppCompatActivity {
 
     //SAVES THE IMAGE ONTO THE PHONE, get the image and its position in the queue
     private void saveImageToPhone(ImageView img, int i){
-        //TODO save image to disk
-
-
         //first we set up the image to be in a state to be saved adn make a bitmap of it
         img.buildDrawingCache();
         Bitmap bm = img.getDrawingCache();
@@ -307,14 +308,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //GENERATES A FILE NAME WITH CURRENT DATE AND TIME WITH INDETIFIER TO MAKE UNIQUE NAMES FOR THE SAVED IMAGES
+    //GENERATES A FILE NAME WITH CURRENT DATE AND TIME WITH INDENTIFIER TO MAKE UNIQUE NAMES FOR THE SAVED IMAGES
     private String generateFileName(int i){
         Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-        int date = c.get(Calendar.DATE);
+        int day = c.get(Calendar.DATE);
+        int month = c.get(Calendar.MONTH);
+        int year = c.get(Calendar.YEAR);
 
-        return Integer.toString(date) + Integer.toString(hour) + Integer.toString(minute ) + "_" + Integer.toString(i) + ".jpg";
+        return Integer.toString(day) + Integer.toString(month) + Integer.toString(year)+ Integer.toString(hour) + Integer.toString(minute ) + "_" + Integer.toString(i) + ".jpg";
     }
 
 
@@ -327,8 +330,10 @@ public class MainActivity extends AppCompatActivity {
 
     //START A NEW SESSION, DISCARDING ALL PREVIOUS IMAGES
     private void newSession(){
-        for (int i = 1; i <= noImages; i++){
-            imageContainer.removeViewAt(i);
+        //need to delete item at 1 each time as items get shifted up once one above is deleted and 0 is the text
+
+        for (int i = 0; i < noImages; i++){
+            imageContainer.removeViewAt(1);
         }
         imagePanel.clear();
         noImages = 0;
@@ -418,6 +423,29 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+
+
+
+    //TESTING******************
+
+    private void testImageSave(){
+        /*String uri = "@mipmap/shot2";
+        int imgres = getResources().getIdentifier(uri,null,getPackageName());
+        ImageView img1 = new ImageView(getApplicationContext());
+        Drawable res = getResources().getDrawable(imgres);
+        img1.setImageDrawable(res);
+
+        String uri2 = "@mipmap/shot_1";
+        int imgres2 = getResources().getIdentifier(uri2,null,getPackageName());
+        ImageView img2 = new ImageView(getApplicationContext());
+        Drawable res2 = getResources().getDrawable(imgres2);
+        img2.setImageDrawable(res2);
+
+        addImageView(img1);
+        addImageView(img2);*/
+
     }
 
 
