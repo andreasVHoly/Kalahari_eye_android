@@ -1,8 +1,11 @@
 package avh.com.kalaharieye;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +34,12 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -263,11 +271,57 @@ public class MainActivity extends AppCompatActivity {
     //SAVE ALL IMAGES IN THE SESSION
     private void saveSession(){
         //TODO cycle through the images and save them
+        for (int i = 0; i < noImages; i++){
+            saveImageToPhone(imagePanel.get(i), i);
+        }
     }
 
-    //SAVES THE IMAGE ONTO THE PHONE
-    private void saveImageToPhone(){
+    //SAVES THE IMAGE ONTO THE PHONE, get the image and its position in the queue
+    private void saveImageToPhone(ImageView img, int i){
         //TODO save image to disk
+
+
+        //first we set up the image to be in a state to be saved adn make a bitmap of it
+        img.buildDrawingCache();
+        Bitmap bm = img.getDrawingCache();
+
+        //now we save the image to the device
+        File storageLocation = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String filename = generateFileName(i);
+        File file = new File(storageLocation, filename);
+
+        //we write the file
+        try{
+            FileOutputStream fos = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+
+            saveFile(getApplicationContext(),Uri.fromFile(file));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+    //GENERATES A FILE NAME WITH CURRENT DATE AND TIME WITH INDETIFIER TO MAKE UNIQUE NAMES FOR THE SAVED IMAGES
+    private String generateFileName(int i){
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR);
+        int minute = c.get(Calendar.MINUTE);
+        int date = c.get(Calendar.DATE);
+
+        return Integer.toString(date) + Integer.toString(hour) + Integer.toString(minute ) + "_" + Integer.toString(i) + ".jpg";
+    }
+
+
+    private void saveFile(Context context, Uri imgURI){
+        Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        scanIntent.setData(imgURI);
+        context.sendBroadcast(scanIntent);
     }
 
 
