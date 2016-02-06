@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.videoio.VideoCapture;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         assignUIVariables();
         setUpImagePanel();
-        cam = new CameraHandler(100, 150, "8080", "admin", "1234");
+        cam = new CameraHandler(95, 150, "88", "admin1", "foscam1", true);
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
 
@@ -224,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         startRefreshAnimation();
         //TODO renable this later
-        /*if (cam.connectToCamera()){
+        if (cam.connectToCamera()){
             currentMode = AppState.LIVE_MODE;
             //now we need to handle the input from the camera
             //we need to set up an update method
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
             vcap.read(firstImage);
             convertMat(firstImage);
 
-        }*/
+        }
 
         stopRefreshAnimation();
 
