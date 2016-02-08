@@ -5,6 +5,7 @@ package avh.com.kalaharieye;
  * class that handles the connection to the camera and handles the assosaited data
  */
 
+import org.bytedeco.javacpp.opencv_videoio;
 import org.opencv.videoio.VideoCapture;
 import android.util.Log;
 
@@ -28,11 +29,12 @@ public class CameraHandler {
         this.password = password;
 
         if (usingFoscam){
-            startString = "rtsp://";
+            //startString = "rtsp://";
+            startString = "http://admin1.foscam1";
             midString = "/videoMain";
         }
     }
-
+    //http://admin1.foscam1@192.168.10.112:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=admin1&pwd=foscam1
 
     public boolean connectToCamera(){
 
@@ -44,7 +46,19 @@ public class CameraHandler {
 
         boolean successfullConnect = false;
 
-        for (int i = startIP; i < endIP; i++){
+        //String adr = "http://admin1.foscam1@192.168.10.112:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=admin1&pwd=foscam1?dummy=param.mjpg";
+        String adr = "http://192.168.10.112:88/cgi-bin/CGIStream.cgi?cmd=GetMJStream&usr=admin1&pwd=foscam1";
+        if (vcap.open(adr)){
+            Log.i("Camera Handler","Connected to camera ");
+            successfullConnect = true;
+        }
+        else{
+
+
+            Log.e("Cam handler", "failed");
+        }
+
+        /*for (int i = startIP; i < endIP; i++){
             connectionAddress = connectionAddressStart + Integer.toString(i) + connectionAddressEnd;
             if (vcap.open(connectionAddress)){
                 Log.i("Camera Handler","Connected to camera at address " + ipAddress + i + " : " + connectionAddress);
@@ -52,7 +66,7 @@ public class CameraHandler {
                 break;
             }
             Log.e("Camera Handler","Could not connect to camera at address " + ipAddress + i+ " : " + connectionAddress);
-        }
+        }*/
         return successfullConnect;
 
     }
