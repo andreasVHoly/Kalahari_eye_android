@@ -20,12 +20,17 @@ public class CameraHandler {
     private String midString  = "/videostream.asf?user=";
     private String ipAddress = "@192.168.0.";
 
-    public CameraHandler(int startIP, int endIP, String port, String username, String password){
+    public CameraHandler(int startIP, int endIP, String port, String username, String password, boolean usingFoscam){
         this.port = port;
         this.startIP = startIP;
         this.endIP = endIP;
         this.userName = username;
         this.password = password;
+
+        if (usingFoscam){
+            startString = "rtsp://";
+            midString = "/videoMain";
+        }
     }
 
 
@@ -33,7 +38,8 @@ public class CameraHandler {
 
 
         String connectionAddressStart = startString + userName + ":" + password + ipAddress;
-        String connectionAddressEnd = ":" + port + midString + userName + "&pwd=" + password + endString;
+        //String connectionAddressEnd = ":" + port + midString + userName + "&pwd=" + password + endString;
+        String connectionAddressEnd = ":" + port + midString;
         VideoCapture vcap = new VideoCapture();
 
         boolean successfullConnect = false;
@@ -41,11 +47,11 @@ public class CameraHandler {
         for (int i = startIP; i < endIP; i++){
             connectionAddress = connectionAddressStart + Integer.toString(i) + connectionAddressEnd;
             if (vcap.open(connectionAddress)){
-                Log.i("Camera Handler","Connected to camera at address " + ipAddress + i);
+                Log.i("Camera Handler","Connected to camera at address " + ipAddress + i + " : " + connectionAddress);
                 successfullConnect = true;
                 break;
             }
-            Log.e("Camera Handler","Could not connect to camera at address " + ipAddress + i);
+            Log.e("Camera Handler","Could not connect to camera at address " + ipAddress + i+ " : " + connectionAddress);
         }
         return successfullConnect;
 

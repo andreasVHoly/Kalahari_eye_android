@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 
+
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         assignUIVariables();
         setUpImagePanel();
-        cam = new CameraHandler(95, 150, "88", "admin1", "foscam1", true);
+        cam = new CameraHandler(65, 150, "88", "admin1", "foscam1", true);
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
 
