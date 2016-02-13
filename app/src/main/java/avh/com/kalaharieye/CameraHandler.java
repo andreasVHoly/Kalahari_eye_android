@@ -74,6 +74,10 @@ public class CameraHandler {
 
 
 
+
+
+
+
     public void setStartIP(int startIP) {
         this.startIP = startIP;
     }

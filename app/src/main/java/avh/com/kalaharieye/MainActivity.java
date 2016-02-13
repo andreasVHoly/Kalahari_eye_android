@@ -3,6 +3,7 @@ package avh.com.kalaharieye;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnRefreshVideo;
     private TextView debugText;
     private ImageView mainImage;
+
+
+    private CameraQuery camQuery;
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -85,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         assignUIVariables();
         setUpImagePanel();
-        cam = new CameraHandler(65, 150, "88", "admin1", "foscam1", true);
+        camQuery = new CameraQuery();
+        //cam = new CameraHandler(65, 150, "88", "admin1", "foscam1", true);
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
 
@@ -97,40 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Call on every application resume
-     **/
-    /*@Override
-    protected void onResume()
-    {
-        Log.i(TAG, "Called onResume");
-        super.onResume();
 
-        Log.i(TAG, "Trying to load OpenCV library");
-        if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mOpenCVCallBack)) {
-            Log.e(TAG, "Cannot connect to OpenCV Manager");
-        }
-    }
-
-    private BaseLoaderCallback mOpenCVCallBack = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                    Log.i("OpenCV", "OpenCV loaded successfully");
-                    // Create and set View
-
-                    setContentView(R.layout.activity_main);
-                    cam.connectToCamera();
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
-            }
-        }
-    };*/
     private void defaultState() {
         currentMode = AppState.NO_VIDEO_MODE;
         btnLiveMode.setChecked(false);
@@ -213,6 +187,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNextShot(){
+
+
+
+        Drawable image = camQuery.getJPEGImage("");
+        btnRefreshVideo.setVisibility(View.INVISIBLE);
+        mainImage.setImageDrawable(image);
 
     }
 
