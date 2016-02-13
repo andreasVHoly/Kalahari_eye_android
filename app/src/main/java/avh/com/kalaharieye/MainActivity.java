@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private CameraQuery camQuery;
+    private ImageCompare imgCompare;
 
 
     /**
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         assignUIVariables();
         setUpImagePanel();
         camQuery = new CameraQuery();
+        imgCompare = new ImageCompare(60);
         //cam = new CameraHandler(65, 150, "88", "admin1", "foscam1", true);
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
@@ -99,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
+
 
 
 
@@ -187,13 +193,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNextShot(){
-
-
-
         Drawable image = camQuery.getJPEGImage("");
+        imgCompare.setWidthAndHeight(image.getIntrinsicWidth(),image.getIntrinsicHeight());
+        Bitmap newImage = imgCompare.drawableToBitmap(image);
+        if (newImage == null){
+            return;
+        }
         btnRefreshVideo.setVisibility(View.INVISIBLE);
-        mainImage.setImageDrawable(image);
 
+        mainImage.setImageBitmap(newImage);
+        //Log.w("Width", Integer.toString(mainImage.getWidth()));
+        //Log.w("Height", Integer.toString(mainImage.getHeight()));
     }
 
     //HANDLES REFRESH BUTTON RESPONSE
