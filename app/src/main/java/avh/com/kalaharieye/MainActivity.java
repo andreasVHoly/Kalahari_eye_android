@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     //VERY IMPORTANT, LOADS THE LIBRARY SO WE CAN USE IT
-    static {
+    /*static {
         System.loadLibrary("opencv_java3");
-    }
+    }*/
 
 
     @Override
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         assignUIVariables();
         setUpImagePanel();
         camQuery = new CameraQuery();
-        imgCompare = new ImageCompare(60);
+        imgCompare = new ImageCompare(120);
         //cam = new CameraHandler(65, 150, "88", "admin1", "foscam1", true);
         defaultState();
         //cam.connectToCamera(); //TODO reenable later
@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
         btnLiveMode.setChecked(false);
         btnShootMode.setChecked(true);
         currentMode = AppState.SHOOTING_MODE;
+        setMainImage();
     }
 
 
@@ -189,12 +190,16 @@ public class MainActivity extends AppCompatActivity {
     //HANDLES NEXT SHOT BUTTON RESPONSE
     public void onNextShotButtonPress(View v) {
         debugText.setText("next shot register");
-        showNextShot();
+        if (currentMode == AppState.SHOOTING_MODE ){
+            showNextShot();
+        }
+
+
     }
 
     private void showNextShot(){
         Drawable image = camQuery.getJPEGImage("");
-        imgCompare.setWidthAndHeight(image.getIntrinsicWidth(),image.getIntrinsicHeight());
+        imgCompare.setWidthAndHeight(1920,1080);
         Bitmap newImage = imgCompare.drawableToBitmap(image);
         if (newImage == null){
             return;
@@ -204,6 +209,14 @@ public class MainActivity extends AppCompatActivity {
         mainImage.setImageBitmap(newImage);
         //Log.w("Width", Integer.toString(mainImage.getWidth()));
         //Log.w("Height", Integer.toString(mainImage.getHeight()));
+    }
+
+
+    private void setMainImage(){
+        Drawable image = camQuery.getJPEGImage("");
+        btnRefreshVideo.setVisibility(View.INVISIBLE);
+        mainImage.setImageDrawable(image);
+        imgCompare.setPreviousImage(image);
     }
 
     //HANDLES REFRESH BUTTON RESPONSE

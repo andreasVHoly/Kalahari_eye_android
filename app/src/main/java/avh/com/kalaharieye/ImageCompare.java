@@ -27,6 +27,15 @@ public class ImageCompare {
         currentImage = new int[height][width];
     }
 
+    public void setPreviousImage(Drawable dr){
+        Bitmap bm = ((BitmapDrawable)dr).getBitmap();
+        for (int x = 0; x < height; x++) {
+            for (int y = 0; y < width; y++) {
+                previousImage[x][y] = bm.getPixel(y,x);
+            }
+        }
+    }
+
 
     public Bitmap drawableToBitmap(Drawable dr){
 
@@ -39,24 +48,27 @@ public class ImageCompare {
 
 
 
-        /*int height = bm.getHeight();
+        int height = bm.getHeight();
         int width = bm.getWidth();
 
-        Log.w("Height::", Integer.toString(height));
-        Log.w("Width::", Integer.toString(width));*/
+        //Log.w("Height::", Integer.toString(bm.getHeight()));
+        //Log.w("Width::", Integer.toString(bm.getWidth()));
+
+
 
         for (int x = 0; x < height; x++){
             for (int y = 0; y < width; y++){
-                currentImage[x][y] = convertToGrayScale(bm.getPixel(x,y));
+                //Log.w("x,y::", x + " " + y);
+                //getpixel(width,height)
+                currentImage[x][y] = convertToGrayScale(bm.getPixel(y,x));
 
                 if (Math.abs(currentImage[x][y] - previousImage[x][y]) > threshold ){
-                    edit.setPixel(x,y,Color.RED);
+                    edit.setPixel(y,x,Color.RED);
                 }
             }
         }
 
-        //
-        // edit.setPixel(0,0,Color.RED);
+        previousImage = currentImage.clone();
         return edit;
     }
 
